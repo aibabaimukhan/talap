@@ -225,8 +225,15 @@ footer{border-top:1px solid var(--line); padding:26px 0 40px; text-align:center;
       <div class="hero-cue">Листайте вниз</div>
     </div>
     <div class="hero-video-wrap">
-      <video id="heroVideo" autoplay muted loop playsinline></video>
-      <div class="video-tools"><label>Видео<input type="file" accept="video/*" id="videoInput"></label></div>
+      <!-- Добавлен атрибут src="1111.mp4" -->
+      <video id="heroVideo" src="1111.mp4" autoplay muted loop playsinline>
+        <!-- Альтернативный способ указания файла для лучших браузерной совместимости -->
+        <source src="1111.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+      </video>
+      <div class="video-tools">
+        <label>Видео<input type="file" accept="video/mp4" id="videoInput"></label>
+      </div>
     </div>
   </div>
 </section>
