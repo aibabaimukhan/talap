@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Современные инструменты проектирования образовательного процесса педагога ТиППО</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#11141b; --bg2:#171b24; --card:#1c212c; --line:#2b3140;
+  --text:#eef0f4; --muted:#96a0b3;
+  --m1:#e5a93a; --m2:#37ab97; --m3:#8b7bea; --m4:#e2604a;
+  --green:#4f9c68; --amber:#c98a2e; --red:#b6483d;
+  --blue:#3f7fc9;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#f6f4ee; --bg2:#efece3; --card:#ffffff; --line:#ddd8ca;
+    --text:#1c2030; --muted:#5c6270;
+  }
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth; scroll-padding-top:70px;}
+body{background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',system-ui,sans-serif; line-height:1.55;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+h1,h2,h3,h4{font-family:'Newsreader',Georgia,serif; font-weight:600; letter-spacing:.2px;}
+p{color:var(--muted);}
+img{max-width:100%;}
+.wrap{max-width:1040px; margin:0 auto; padding:0 24px;}
+
+.reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+.hero{position:relative; min-height:100svh; overflow:hidden; background:linear-gradient(160deg,#171b24,#0d1016); padding:calc(20px + env(safe-area-inset-top,0px)) 24px 28px;}
+.hero::before{content:""; position:absolute; inset:-20%; z-index:0; pointer-events:none; filter:blur(50px);
+  background:
+    radial-gradient(circle at 15% 18%, rgba(229,169,58,.28), transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(55,171,151,.24), transparent 46%),
+    radial-gradient(circle at 78% 88%, rgba(139,123,234,.24), transparent 46%),
+    radial-gradient(circle at 12% 90%, rgba(226,96,74,.2), transparent 46%);}
+.hero-grid{position:relative; z-index:1; max-width:1140px; margin:0 auto; min-height:calc(100svh - 48px); display:flex; align-items:center; gap:40px;}
+.hero-text{flex:1 1 480px;}
+.hero-eyebrow{color:var(--m1); font-size:.8rem; letter-spacing:.06em; margin-bottom:14px;}
+.hero-text h1{color:#fdfdfd; font-size:clamp(1.5rem,3.6vw,2.65rem); line-height:1.15; border-top:1px solid rgba(255,255,255,.25); padding-top:18px;}
+.hero-sub{color:#c7cdd8; margin-top:16px; max-width:520px; font-size:.98rem;}
+.hero-cue{margin-top:30px; color:#aeb4c0; font-size:.72rem; display:flex; align-items:center; gap:8px;}
+.hero-cue::before{content:""; width:1px; height:22px; background:#aeb4c0; display:block; animation:cue 1.8s infinite;}
+@keyframes cue{0%{transform:scaleY(0); transform-origin:top;}50%{transform:scaleY(1); transform-origin:top;}51%{transform-origin:bottom;}100%{transform:scaleY(0); transform-origin:bottom;}}
+
+.hero-video-wrap{position:relative; flex:0 0 auto; width:min(300px,72vw); aspect-ratio:9/16; border-radius:20px; overflow:hidden; box-shadow:0 0 0 1px rgba(217,161,92,.35),0 30px 60px -20px rgba(0,0,0,.7); background:#000;}
+.hero-video-wrap video{width:100%; height:100%; object-fit:cover; display:block;}
+.hero-video-wrap::after{content:""; position:absolute; inset:0; border-radius:20px; box-shadow:inset 0 -60px 60px -30px rgba(0,0,0,.6); pointer-events:none;}
+.video-tools{position:absolute; top:10px; right:10px; z-index:3;}
+.video-tools label{background:rgba(20,23,30,.65); border:1px solid rgba(255,255,255,.3); color:#e9ebef; font-size:.7rem; padding:7px 10px; border-radius:16px; cursor:pointer; backdrop-filter:blur(4px); display:block;}
+.video-tools input{display:none;}
+@media (max-width:760px){
+  .hero-grid{flex-direction:column-reverse; gap:26px; padding-top:10px;}
+  .hero-video-wrap{width:min(230px,58vw);}
+}
+
+.tabbar{position:sticky; top:0; z-index:10; background:rgba(17,20,27,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .tabbar{background:rgba(246,244,238,.92);}}
+.tabbar-inner{max-width:1040px; margin:0 auto; display:flex; gap:4px; padding:0 24px; overflow-x:auto;}
+.tab{border:none; background:none; color:var(--muted); font-family:'IBM Plex Sans',sans-serif; font-size:.9rem; padding:16px 14px; cursor:pointer; white-space:nowrap; border-bottom:3px solid transparent; transition:color .2s,border-color .2s;}
+.tab strong{color:inherit; font-weight:600;}
+.tab[data-mod="m1"].active{color:var(--m1); border-color:var(--m1);}
+.tab[data-mod="m2"].active{color:var(--m2); border-color:var(--m2);}
+.tab[data-mod="m3"].active{color:var(--m3); border-color:var(--m3);}
+.tab[data-mod="m4"].active{color:var(--m4); border-color:var(--m4);}
+
+.module{display:none; padding:56px 0 40px;}
+.module.active{display:block;}
+.mod-head{margin-bottom:30px;}
+.mod-tag{font-size:.78rem; margin-bottom:8px;}
+.mod-head h2{font-size:clamp(1.5rem,3.4vw,2.1rem); max-width:760px;}
+.mod-head p{margin-top:12px; max-width:640px; font-size:.98rem;}
+
+.stage-note{font-size:.85rem; color:var(--muted); margin-bottom:16px; border-left:2px solid var(--line); padding-left:12px;}
+.stages{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:34px;}
+.stage{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px 18px 20px; transition:transform .25s ease, border-color .25s ease, opacity .6s ease;}
+.stage:hover{transform:translateY(-3px);}
+.stage-n{font-size:.72rem; color:var(--muted); margin-bottom:6px;}
+.stage h3{font-size:1.02rem; margin-bottom:8px;}
+.stage ul{padding-left:18px; font-size:.87rem; color:var(--muted);}
+.stage li{margin-bottom:5px;}
+
+.chart-card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px 22px 16px; margin-bottom:48px;}
+.chart-card h4{font-size:.95rem; margin-bottom:16px; font-family:'IBM Plex Sans',sans-serif; font-weight:600; color:var(--text);}
+.bars{display:flex; align-items:flex-end; gap:10px; height:140px;}
+.bar-col{flex:1; display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end;}
+.bar{width:100%; max-width:38px; border-radius:6px 6px 2px 2px; transform:scaleY(0); transform-origin:bottom; transition:transform 1s cubic-bezier(.2,.8,.3,1);}
+.chart-card.in .bar{transform:scaleY(1);}
+.bar-label{font-size:.66rem; color:var(--muted); margin-top:8px; text-align:center; line-height:1.2;}
+
+.topics h3.section-title{font-size:1.1rem; margin-bottom:16px; padding-top:8px; border-top:1px solid var(--line);}
+details.topic{border-bottom:1px solid var(--line); padding:16px 0;}
+details.topic summary{cursor:pointer; list-style:none; display:flex; align-items:baseline; gap:14px; font-family:'Newsreader',serif; font-size:1.08rem; color:var(--text);}
+details.topic summary::-webkit-details-marker{display:none;}
+details.topic summary::after{content:"+"; margin-left:auto; color:var(--muted); font-family:'IBM Plex Sans',sans-serif; font-size:1.1rem;}
+details.topic[open] summary::after{content:"–";}
+.topic-num{color:var(--muted); font-size:.85rem; font-family:'IBM Plex Sans',sans-serif; min-width:34px;}
+.topic-body{padding:14px 0 4px 48px; font-size:.92rem; color:var(--muted);}
+.topic-body ul{padding-left:18px; margin-top:6px;}
+.topic-body li{margin-bottom:5px;}
+.topic-body b{color:var(--text); font-weight:600;}
+
+.case-tag{display:inline-block; font-size:.78rem; color:#fff; background:var(--m4); padding:3px 10px; border-radius:20px; margin-bottom:10px;}
+.card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 22px; margin-bottom:18px;}
+.card h4{font-size:1rem; margin-bottom:10px;}
+
+.cycle{display:flex; gap:16px; flex-wrap:wrap; justify-content:center; align-items:center; margin:18px 0 30px; position:relative;}
+.cycle-ring{position:absolute; inset:0; margin:auto; width:120px; height:120px; border:2px dashed rgba(217,161,92,.35); border-radius:50%; animation:spin 18s linear infinite; z-index:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.cycle-card{position:relative; z-index:1; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; max-width:230px; flex:1 1 200px;}
+.cycle-card .n{display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--m4); color:#fff; font-size:.72rem; margin-bottom:8px;}
+.cycle-card h5{font-size:.9rem; margin-bottom:6px; font-family:'IBM Plex Sans',sans-serif; font-weight:600;}
+.cycle-card p{font-size:.83rem;}
+.cycle-arrow{color:var(--m4); font-size:1.3rem; z-index:1;}
+
+.stairs{display:flex; align-items:flex-end; gap:6px; margin:18px 0 8px; overflow-x:auto; padding-bottom:6px;}
+.step{flex:1 1 0; min-width:150px; border-radius:8px 8px 0 0; padding:10px 12px; color:#fff; transform:scaleY(0); transform-origin:bottom; transition:transform .8s cubic-bezier(.2,.8,.3,1);}
+.stairs.in .step{transform:scaleY(1);}
+.step b{display:block; font-size:.78rem; letter-spacing:.03em; margin-bottom:4px;}
+.step span{font-size:.72rem; opacity:.92; display:block; line-height:1.3;}
+.step1{height:70px; background:#4a5568;}
+.step2{height:95px; background:#7a4a35;}
+.step3{height:120px; background:#a15a2c;}
+.step4{height:145px; background:#c96a26;}
+.step5{height:168px; background:#b6304a;}
+.step6{height:190px; background:#8b2350;}
+
+.score-table{width:100%; border-collapse:collapse; margin:14px 0 24px; font-size:.85rem;}
+.score-table th{text-align:left; font-size:.78rem; color:var(--muted); padding:8px 10px; border-bottom:1px solid var(--line);}
+.score-table td{padding:10px; border-bottom:1px solid var(--line); vertical-align:top;}
+.pill{display:inline-flex; align-items:center; justify-content:center; min-width:26px; padding:2px 8px; border-radius:20px; color:#fff; font-size:.78rem; font-weight:600; margin-bottom:6px;}
+.pill.g{background:var(--green);} .pill.a{background:var(--amber);} .pill.r{background:var(--red);}
+
+.checklist{list-style:none;}
+.checklist li{display:flex; gap:10px; align-items:flex-start; padding:9px 0; font-size:.9rem; color:var(--muted); opacity:0; transform:translateX(-10px); transition:opacity .45s ease, transform .45s ease;}
+.checklist.in li{opacity:1; transform:translateX(0);}
+.checklist .tick{flex:0 0 18px; height:18px; border-radius:5px; background:var(--green); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.72rem; margin-top:1px;}
+
+.toggles{display:grid; gap:10px; margin:14px 0 6px;}
+.toggle-row{display:flex; align-items:center; gap:12px; opacity:0; transform:translateX(-10px); transition:opacity .45s ease, transform .45s ease;}
+.toggle-row.in{opacity:1; transform:translateX(0);}
+.sw{width:44px; height:24px; border-radius:14px; background:var(--line); position:relative; flex:0 0 auto;}
+.sw::after{content:""; position:absolute; width:18px; height:18px; border-radius:50%; background:var(--muted); top:3px; left:3px; transition:.3s;}
+.toggle-row.in .sw{background:var(--green);}
+.toggle-row.in .sw::after{left:23px; background:#fff;}
+.toggle-row span.t{font-size:.87rem; color:var(--muted);}
+
+.journey{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0 26px;}
+@media (max-width:640px){.journey{grid-template-columns:1fr;}}
+.journey-col h5{font-size:.85rem; margin-bottom:10px; text-align:center; font-family:'IBM Plex Sans',sans-serif; font-weight:600;}
+.quote{background:var(--bg2); border-left:3px solid var(--m4); border-radius:6px; padding:12px 14px; font-size:.85rem; margin-bottom:10px;}
+.quote b{display:block; color:var(--text); font-size:.8rem; margin-bottom:3px;}
+
+.chevrons{display:flex; gap:6px; margin:18px 0 6px; flex-wrap:wrap;}
+.chev{flex:1 1 160px; background:var(--bg2); border:1px solid var(--line); padding:16px 18px 16px 20px; position:relative; opacity:0; transform:translateX(-14px); transition:opacity .5s ease, transform .5s ease;}
+.chev.in{opacity:1; transform:translateX(0);}
+.chev b{display:block; color:var(--m4); font-size:.78rem; margin-bottom:6px;}
+.chev p{font-size:.82rem;}
+
+.reflect-grid{display:grid; grid-template-columns:170px 1fr; gap:28px; align-items:center; margin:18px 0 10px;}
+@media (max-width:640px){.reflect-grid{grid-template-columns:1fr; justify-items:center;}}
+.ring-wrap{position:relative; width:150px; height:150px;}
+.ring-wrap svg{transform:rotate(-90deg);}
+.ring-bg{fill:none; stroke:var(--line); stroke-width:10;}
+.ring-fg{fill:none; stroke:var(--m4); stroke-width:10; stroke-linecap:round; stroke-dasharray:377; stroke-dashoffset:377; transition:stroke-dashoffset .6s ease;}
+.ring-pct{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Newsreader',serif; font-size:1.6rem; font-weight:600;}
+.reflect-list{list-style:none;}
+.reflect-list li{display:flex; gap:10px; align-items:flex-start; padding:7px 0; font-size:.9rem; cursor:pointer;}
+.reflect-list input{margin-top:4px; accent-color:var(--m4); width:16px; height:16px; flex:0 0 auto;}
+.reflect-list .done span{color:var(--muted); text-decoration:line-through;}
+.reflect-group-title{font-size:.75rem; color:var(--muted); margin:14px 0 2px; letter-spacing:.02em;}
+
+.benefit-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin-top:4px;}
+.benefit-col{border-radius:10px; padding:16px 18px; border:1px solid var(--line);}
+.benefit-tag{display:inline-block; font-size:.72rem; font-weight:600; color:#fff; padding:3px 10px; border-radius:20px; margin-bottom:10px;}
+.benefit-blue{background:rgba(63,127,201,.08);} .benefit-blue .benefit-tag{background:var(--blue);}
+.benefit-green{background:rgba(79,156,104,.08);} .benefit-green .benefit-tag{background:var(--green);}
+.benefit-orange{background:rgba(201,138,46,.08);} .benefit-orange .benefit-tag{background:var(--amber);}
+.benefit-col ul{padding-left:16px; font-size:.83rem; color:var(--muted);}
+.benefit-col li{margin-bottom:5px;}
+
+.tools-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px;}
+.tool-col{border-radius:10px; padding:15px 17px; color:#fff;}
+.tool-chatgpt{background:linear-gradient(160deg,#4a7fe0,#2c4f9e);}
+.tool-copilot{background:linear-gradient(160deg,#2fae9c,#1c6e63);}
+.tool-gemini{background:linear-gradient(160deg,#e5b23f,#c9852e);}
+.tool-gamma{background:linear-gradient(160deg,#e2795c,#b8503a);}
+.tool-name{font-weight:600; margin-bottom:8px; font-size:.95rem;}
+.tool-name span{font-weight:400; opacity:.82; font-size:.74rem; display:block; margin-top:2px;}
+.tool-col ul{padding-left:16px; font-size:.8rem; margin-bottom:10px; opacity:.96;}
+.tool-col li{margin-bottom:4px;}
+.tool-use{font-size:.72rem; opacity:.88; border-top:1px solid rgba(255,255,255,.25); padding-top:8px;}
+
+.example-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px;}
+.example{background:var(--bg2); border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
+.ex-n{width:22px; height:22px; border-radius:50%; background:var(--m3); color:#fff; font-size:.72rem; display:flex; align-items:center; justify-content:center; margin-bottom:8px; font-weight:600;}
+.example h5{font-size:.88rem; margin-bottom:6px; font-family:'IBM Plex Sans',sans-serif; font-weight:600; color:var(--text);}
+.example p{font-size:.82rem; margin-bottom:8px;}
+.ex-out{display:block; font-size:.72rem; color:var(--m3); background:rgba(139,123,234,.14); padding:4px 8px; border-radius:6px;}
+
+.flow{display:flex; flex-wrap:wrap; gap:10px; align-items:stretch; margin:16px 0 6px;}
+.flow-step{flex:1 1 160px; background:var(--bg2); border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
+.flow-step .fn{color:var(--m3); font-weight:600; font-size:.78rem; margin-bottom:6px;}
+.flow-step p{font-size:.8rem;}
+.flow-arrow{align-self:center; color:var(--muted); font-size:1.1rem;}
+@media (max-width:760px){.flow-arrow{display:none;}}
+
+footer{border-top:1px solid var(--line); padding:26px 0 40px; text-align:center; color:var(--muted); font-size:.82rem;}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Защита практических результатов курса</div>
+      <h1>Современные инструменты проектирования образовательного процесса педагога ТиППО по модулю / дисциплине с учётом профиля специальности</h1>
+      <p class="hero-sub">Три модуля курса — функциональная карта квалификации, оценивание учебных достижений и ИИ-инструменты — и итоговая защита с самоанализом: путь от запоминания к созданию собственного продукта.</p>
+      <div class="hero-cue">Листайте вниз</div>
+    </div>
+    <div class="hero-video-wrap">
+      <!-- Добавлен атрибут src="1111.mp4" -->
+      <video id="heroVideo" src="1111.mp4" autoplay muted loop playsinline>
+        <!-- Альтернативный способ указания файла для лучших браузерной совместимости -->
+        <source src="1111.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+      </video>
+      <div class="video-tools">
+        <label>Видео<input type="file" accept="video/mp4" id="videoInput"></label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<nav class="tabbar">
+  <div class="tabbar-inner">
+    <button class="tab active" data-mod="m1"><strong>Модуль 1</strong> · ФКК</button>
+    <button class="tab" data-mod="m2"><strong>Модуль 2</strong> · Оценивание</button>
+    <button class="tab" data-mod="m3"><strong>Модуль 3</strong> · ИИ-инструменты</button>
+    <button class="tab" data-mod="m4"><strong>Защита</strong> · Самоанализ</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section class="module active" id="m1">
+  <div class="mod-head">
+    <div class="mod-tag" style="color:var(--m1)">Модуль 1</div>
+    <h2>Функциональная карта квалификации (ФКК)</h2>
+    <p>Цель: научиться анализировать нормативные требования к квалификации и самостоятельно формировать функциональную карту квалификации по своей специальности — от отраслевого анализа до перечня трудовых функций, умений и знаний.</p>
+  </div>
+
+  <div class="stage-note">Защита строится по ступеням таксономии Блума снизу вверх — слайды 2–6 шаблона презентации.</div>
+  <div class="stages">
+    <div class="stage"><div class="stage-n">1 слайд · Запомнили</div><h3>Ключевые понятия</h3><ul>
+      <li>НСК, НРК (8 уровней), ОРК, профстандарт (ПС)</li>
+      <li>ФКК и её 9 структурных компонентов</li>
+      <li>Трудовая функция, профессиональная задача, дескриптор</li>
+    </ul></div>
+    <div class="stage"><div class="stage-n">2 слайд · Поняли</div><h3>Как это связано</h3><ul>
+      <li>Уровень НРК определяет сложность и самостоятельность трудовых функций</li>
+      <li>ФКК = ТФ → проф.задачи → умения → знания</li>
+      <li>Функциональный анализ — основа построения карты</li>
+    </ul></div>
+    <div class="stage"><div class="stage-n">3 слайд · Применили</div><h3>Проект на рабочем месте</h3><ul>
+      <li>Выбрана модель трудовых функций под специальность</li>
+      <li>Определён вид проф. деятельности и уровень квалификации</li>
+      <li>Разработан фрагмент ФКК по своей дисциплине/модулю</li>
+    </ul></div>
+    <div class="stage"><div class="stage-n">4 слайд · Анализ</div><h3>Сравнение подходов</h3><ul>
+      <li>Линейная / циклическая / процессная / продуктовая модели ТФ</li>
+      <li>Дедуктивный / индуктивный / смешанный метод формирования ФКК</li>
+      <li>Обоснование выбора для конкретной профессии</li>
+    </ul></div>
+    <div class="stage"><div class="stage-n">5 слайд · Рефлексия</div><h3>Самоанализ</h3><ul>
+      <li>Что было сложно при анализе нормативных документов</li>
+      <li>Насколько ФКК получилась проверяемой и без дублирования</li>
+      <li>Итог по модулю и связь с последующими квалификациями</li>
+    </ul></div>
+  </div>
+
+  <div class="chart-card" data-chart>
+    <h4>Глубина освоения по уровням Блума — Модуль 1</h4>
+    <div class="bars">
+      <div class="bar-col"><div class="bar" style="height:35%;background:#4a5568"></div><div class="bar-label">Знание</div></div>
+      <div class="bar-col"><div class="bar" style="height:50%;background:#7a5a3a"></div><div class="bar-label">Понимание</div></div>
+      <div class="bar-col"><div class="bar" style="height:66%;background:#a1732c"></div><div class="bar-label">Применение</div></div>
+      <div class="bar-col"><div class="bar" style="height:80%;background:var(--m1)"></div><div class="bar-label">Анализ моделей ТФ</div></div>
+      <div class="bar-col"><div class="bar" style="height:70%;background:#b6304a"></div><div class="bar-label">Оценка выбора метода</div></div>
+      <div class="bar-col"><div class="bar" style="height:92%;background:#8b2350"></div><div class="bar-label">Создание фрагмента ФКК</div></div>
+    </div>
+  </div>
+
+  <div class="topics">
+    <h3 class="section-title">Темы модуля 1</h3>
+
+    <details class="topic"><summary><span class="topic-num">1.1</span>Структурные компоненты функциональной карты квалификации</summary>
+      <div class="topic-body">Система образования РК строит программы на основе НРК, ОРК и профстандартов (НСК). Элементы НСК: <b>НРК</b> (8 уровней от базовых навыков до экспертных), <b>ОРК</b> (уровни по отраслям), <b>ПС</b> (требования к квалификации и труду), образовательные программы, сертификация специалистов.
+        <ul>
+          <li>Функциональный анализ = выбор группы квалификаций → анализ документов → определение ТФ и задач → составление ФКК</li>
+          <li><b>9 компонентов ФКК:</b> название квалификации, область деятельности, трудовые функции, профессиональные задачи, умения, знания, уровень НРК, критерии оценки квалификации, связь с другими квалификациями</li>
+          <li>Дескрипторы НРК описывают знания, умения и трудовые функции по уровням (1–8)</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="topic"><summary><span class="topic-num">1.2</span>Определение вида профессиональной деятельности и выбор квалификации</summary>
+      <div class="topic-body">Вид деятельности определяется через анализ отрасли, целей труда, типичных задач и условий работы. Выбор квалификации — соответствие уровню НРК (2–5: установленный / повышенный / специалист среднего звена / прикладной бакалавр) по сложности и самостоятельности трудовых функций.
+        <ul>
+          <li>Группы родственных квалификаций — по горизонтали (один уровень НРК) или по вертикали (несколько уровней)</li>
+          <li>Пример: специальность может иметь 2–3 ФКК разного уровня</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="topic"><summary><span class="topic-num">1.3</span>Анализ правовых документов, устанавливающих требования к квалификации</summary>
+      <div class="topic-body">Ключевые документы РК: Трудовой кодекс, Закон «О профессиональных квалификациях» (2023), Национальная рамка квалификаций, профессиональные стандарты, Классификатор профессий (enbek.kz), ГОСО.
+        <ul>
+          <li>Алгоритм анализа: определить профессию → найти профстандарт → изучить уровень НРК → сопоставить с ТК и ГОСО → проверить независимую оценку</li>
+          <li>Пример: сварщик 3 уровня — ручная дуговая сварка без обязательного опыта</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="topic"><summary><span class="topic-num">1.4</span>Модель трудовых функций и выбор метода формирования ФКК</summary>
+      <div class="topic-body">Четыре модели трудовых функций:
+        <ul>
+          <li><b>Линейная</b> — последовательные этапы (слесарь, электромонтёр)</li>
+          <li><b>Циклическая</b> — повторяющиеся циклы (повар, медсестра, водитель)</li>
+          <li><b>Процессная</b> — вход → операция → выход (оператор, диспетчер)</li>
+          <li><b>Продуктовая</b> — фокус на измеримом результате труда (программист, технолог)</li>
+        </ul>
+        Методы формирования ФКК: <b>дедуктивный</b>, <b>индуктивный</b>, <b>смешанный</b> (чаще всего применяется в Казахстане).
+      </div>
+    </details>
+
+    <details class="topic"><summary><span class="topic-num">1.5</span>Трудовые функции и профессиональные задачи по квалификации. Умения и знания</summary>
+      <div class="topic-body">Структура: трудовая функция → профессиональная задача → умения → знания.
+        <ul>
+          <li>Методы сбора данных: <b>DACUM</b>, функциональный анализ, метод <b>Дельфи</b></li>
+          <li>Пример: Электрогазосварщик, 3 уровень НРК — ТФ: подготовка → сварка → контроль качества</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="module" id="m2">
+  <div class="mod-head">
+    <div class="mod-tag" style="color:var(--m2)">Модуль 2</div>
+    <h2>Оценивание учебных достижений</h2>
+    <p>Цель: разработать прозрачную, объективную систему критериального оценивания и фонд оценочных средств (ФОС) по дисциплине, опираясь на нормативную базу и таксономию Блума.</p>
+  </div>
+
+  <div class="stage-note">Продукт модуля — проект ФОС по формативному и суммативному оцениванию. Живой пример защиты — во вкладке «Защита».</div>
+  <div class="stages">
+    <div class="stage"><div class="stage-n">1 слайд · Запомнили</div><h3>Ключевые понятия</h3><ul>
+      <li>Текущий / промежуточный / итоговый контроль</li>
+      <li>Критериальное оценивание, дескриптор, рубрика</li>
+      <li>ФОС и его компоненты</li>
+    </ul></div>
+    <div class="stage"><div class="stage-n">2 слайд · Поняли</div><h3>Как это связано</h3><ul>
+      <li>Метод оценивания должен соответствовать уровню таксономии Блума</li>
+      <li>Критерии задаются до начала работы</li>
+      <li>ФОС = гарантия честного и системного оценивания</li>
+    </ul></div>
+    <div class="stage"><div class="stage-n">3 слайд · Применили</div><h3>Проект на рабочем месте</h3><ul>
+      <li>Разработаны критерии и дескрипторы к конкретному заданию</li>
+      <li>Составлен оценочный лист / рубрика</li>
+      <li>Подобрана шкала оценивания под тип задания</li>
+    </ul></div>
+    <div class="stage"><div class="stage-n">4 слайд · Анализ</div><h3>Сравнение подходов</h3><ul>
+      <li>5-балльная, уровневая, зачёт/незачёт, % и буквенная (A–F) шкалы</li>
+      <li>Формализованные vs неформализованные методы</li>
+      <li>Типичные ошибки при разработке ФОС</li>
+    </ul></div>
+    <div class="stage"><div class="stage-n">5 слайд · Рефлексия</div><h3>Самоанализ</h3><ul>
+      <li>Проверка ФОС по чек-листу самопроверки</li>
+      <li>Совпадают ли критерии с целями занятия</li>
+      <li>Защита проекта ФОС — итог по модулю</li>
+    </ul></div>
+  </div>
+
+  <div class="chart-card" data-chart>
+    <h4>Глубина освоения по уровням Блума — Модуль 2</h4>
+    <div class="bars">
+      <div class="bar-col"><div class="bar" style="height:40%;background:#4a5568"></div><div class="bar-label">Знание понятий</div></div>
+      <div class="bar-col"><div class="bar" style="height:55%;background:#7a5a3a"></div><div class="bar-label">Понимание связи с Блумом</div></div>
+      <div class="bar-col"><div class="bar" style="height:70%;background:#a1732c"></div><div class="bar-label">Составление рубрики</div></div>
+      <div class="bar-col"><div class="bar" style="height:78%;background:var(--m2)"></div><div class="bar-label">Сравнение шкал</div></div>
+      <div class="bar-col"><div class="bar" style="height:85%;background:#5e8ea8"></div><div class="bar-label">Проверка по чек-листу</div></div>
+      <div class="bar-col"><div class="bar" style="height:95%;background:#356b63"></div><div class="bar-label">Готовый ФОС</div></div>
+    </div>
+  </div>
+
+  <div class="topics">
+    <h3 class="section-title">Темы модуля 2</h3>
+
+    <details class="topic"><summary><span class="topic-num">2.1</span>Нормативные документы по текущему контролю и аттестации</summary>
+      <div class="topic-body">Система контроля успеваемости в РК опирается на Конституцию, Закон «Об образовании» (ст. 55, 59) и приказы Минпросвещения: №348 (ГОСО), №385, №125, №75, №52.
+        <ul><li>Понятия: академический кредит, ГПА (GPA), промежуточная и итоговая аттестация, квалификационный и демонстрационный экзамен</li></ul>
+      </div>
+    </details>
+
+    <details class="topic"><summary><span class="topic-num">2.2</span>Классификация методов и инструментов оценивания</summary>
+      <div class="topic-body">Методы классифицируются по 5 основаниям:
+        <ul>
+          <li><b>По форме:</b> устные, письменные, практические</li>
+          <li><b>По формализации:</b> формализованные и неформализованные</li>
+          <li><b>По этапу:</b> диагностические, формативные, суммативные</li>
+          <li><b>По взаимодействию:</b> индивидуальные и групповые</li>
+          <li><b>По результату:</b> знания, умения/навыки, компетенции</li>
+        </ul>
+        14 инструментов: тесты, контрольные работы, проекты, портфолио, наблюдение, кейсы, рубрики и др.
+      </div>
+    </details>
+
+    <details class="topic"><summary><span class="topic-num">2.3</span>Подбор методов оценивания в соответствии с уровнем таксономии</summary>
+      <div class="topic-body">Таксономия Блума (1956) — 6 уровней:
+        <ul>
+          <li><b>Запоминание</b> — тесты, устный опрос</li>
+          <li><b>Понимание</b> — эссе, дискуссии</li>
+          <li><b>Применение</b> — задачи, практика</li>
+          <li><b>Анализ</b> — разбор ситуаций, схемы</li>
+          <li><b>Оценивание</b> — дебаты, рецензии</li>
+          <li><b>Создание</b> — проектная работа</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="topic"><summary><span class="topic-num">2.4</span>Применение критериального оценивания в учебном процессе</summary>
+      <div class="topic-body">Термин введён Робертом Глейзером (1963). В Казахстане внедряется с 2010 года через НИШ.
+        <ul>
+          <li>Три уровня достижений: высокий / средний / низкий</li>
+          <li>Шкалы: 5-балльная, уровневая, зачёт/незачёт, процентная, буквенная (A–F)</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="topic"><summary><span class="topic-num">2.5</span>Фонд оценочных средств (ФОС)</summary>
+      <div class="topic-body">ФОС — комплект материалов для контроля по дисциплине/модулю.
+        <ul>
+          <li><b>Принципы:</b> соответствие целям, разнообразие форм, открытость критериев, проверяемость</li>
+          <li><b>8 шагов:</b> изучение программы → выбор форм контроля → разработка заданий → критерии → экзаменационные материалы → сборка → инструкции → самопроверка</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="module" id="m3">
+  <div class="mod-head">
+    <div class="mod-tag" style="color:var(--m3)">Модуль 3</div>
+    <h2>ИИ-инструменты педагога</h2>
+    <p>Цель: освоить AI-платформы для автоматизации рутинных задач, визуализации идей, создания интерактивных материалов и виртуальных помощников в учебном процессе.</p>
+  </div>
+
+  <div class="stage-note">Продукт модуля — созданный с помощью ИИ инструмент для собственной дисциплины.</div>
+  <div class="stages">
+    <div class="stage"><div class="stage-n">1 слайд · Запомнили</div><h3>Ключевые понятия</h3><ul>
+      <li>ChatGPT, Copilot, Gemini, Gamma AI</li>
+      <li>Napkin AI, EDpuzzle, Genially, Powtoon, Notion AI</li>
+      <li>NLP, ML, VR/AR</li>
+    </ul></div>
+    <div class="stage"><div class="stage-n">2 слайд · Поняли</div><h3>Как это связано</h3><ul>
+      <li>ИИ автоматизирует рутину и персонализирует обучение</li>
+      <li>Качество промта определяет качество результата</li>
+      <li>Интерактивность повышает вовлечённость</li>
+    </ul></div>
+    <div class="stage"><div class="stage-n">3 слайд · Применили</div><h3>Проект на рабочем месте</h3><ul>
+      <li>Составлен промт для урока/теста</li>
+      <li>Создан видеоурок в EDpuzzle или интерактив в Genially</li>
+      <li>Настроен GPT-бот или пространство в Notion AI</li>
+    </ul></div>
+    <div class="stage"><div class="stage-n">4 слайд · Анализ</div><h3>Сравнение инструментов</h3><ul>
+      <li>Copilot — Microsoft/код; Gemini — мультимодальность; ChatGPT — универсальность</li>
+      <li>EDpuzzle vs Genially vs Powtoon</li>
+      <li>Выбор инструмента под задачу</li>
+    </ul></div>
+    <div class="stage"><div class="stage-n">5 слайд · Защита</div><h3>Итог продукта</h3><ul>
+      <li>Что изменилось в занятиях после внедрения ИИ</li>
+      <li>ИИ помогает, но не заменяет педагога</li>
+      <li>Защита созданного мини-продукта</li>
+    </ul></div>
+  </div>
+
+  <div class="chart-card" data-chart>
+    <h4>Глубина освоения по уровням Блума — Модуль 3</h4>
+    <div class="bars">
+      <div class="bar-col"><div class="bar" style="height:45%;background:#4a5568"></div><div class="bar-label">Знаю инструменты</div></div>
+      <div class="bar-col"><div class="bar" style="height:58%;background:#7a5a3a"></div><div class="bar-label">Понимаю принцип промта</div></div>
+      <div class="bar-col"><div class="bar" style="height:72%;background:#a1732c"></div><div class="bar-label">Применяю на практике</div></div>
+      <div class="bar-col"><div class="bar" style="height:80%;background:var(--m3)"></div><div class="bar-label">Сравниваю инструменты</div></div>
+      <div class="bar-col"><div class="bar" style="height:75%;background:#6a5fb0"></div><div class="bar-label">Оцениваю ограничения</div></div>
+      <div class="bar-col"><div class="bar" style="height:90%;background:#4c4290"></div><div class="bar-label">Создан свой продукт</div></div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-bottom:30px">
+    <h4>Результат обучения по теме 3.1: с применением цифровых инструментов</h4>
+    <p style="font-size:.85rem; margin-bottom:4px">От рутины педагога — к готовому цифровому уроку за 5 шагов.</p>
+    <div class="flow">
+      <div class="flow-step"><div class="fn">1 · Цели и тема</div><p>Определение цели занятия, например изучение истории Казахстана</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fn">2 · Подбор инструментов</div><p>Выбор платформ (Moodle), интерактивных заданий и приложений</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fn">3 · Интерактивный контент</div><p>Оцифровка материалов, разработка заданий и игр</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fn">4 · Структура и сценарий</div><p>План урока: введение → основная часть → заключение и оценка</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fn">5 · Тест и публикация</div><p>Проверка на ошибки и публикация на платформе</p></div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-bottom:30px">
+    <h4>Преимущества ИИ в образовании</h4>
+    <p style="font-size:.85rem; margin-bottom:14px">Автоматизация рутины не заменяет педагога — она освобождает время для индивидуального подхода и творчества.</p>
+    <div class="benefit-grid">
+      <div class="benefit-col benefit-blue">
+        <div class="benefit-tag">Для обучающихся</div>
+        <ul>
+          <li>Индивидуальный подход и адаптация материалов</li>
+          <li>Мгновенная обратная связь по работам</li>
+          <li>Развитие критического мышления и креативности</li>
+        </ul>
+      </div>
+      <div class="benefit-col benefit-green">
+        <div class="benefit-tag">Для педагогов</div>
+        <ul>
+          <li>Автоматизация проверки работ и рутинных задач</li>
+          <li>Целевые рекомендации по каждому учащемуся</li>
+          <li>Фокус на стратегических решениях и общении со студентами</li>
+        </ul>
+      </div>
+      <div class="benefit-col benefit-orange">
+        <div class="benefit-tag">Для родителей</div>
+        <ul>
+          <li>Упрощённый мониторинг прогресса ребёнка</li>
+          <li>Прозрачная информация об успехах учащегося</li>
+          <li>Своевременное вмешательство, если ребёнок отстаёт</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-bottom:30px">
+    <h4>Ведущие ИИ-инструменты и их применение</h4>
+    <div class="tools-grid">
+      <div class="tool-col tool-chatgpt">
+        <div class="tool-name">ChatGPT<span>OpenAI</span></div>
+        <ul><li>Первый и широко доступный</li><li>Реалистичный текст и контент</li><li>Бесплатная и платная версии</li></ul>
+        <div class="tool-use">Тексты · Ответы · Перевод · Обучение</div>
+      </div>
+      <div class="tool-col tool-copilot">
+        <div class="tool-name">Copilot<span>Microsoft</span></div>
+        <ul><li>Интеграция с MS Office/Windows</li><li>Генерация кода для разработчиков</li><li>Поиск Bing и изображения</li></ul>
+        <div class="tool-use">Офисные документы · Почта · Изображения</div>
+      </div>
+      <div class="tool-col tool-gemini">
+        <div class="tool-name">Gemini<span>Google</span></div>
+        <ul><li>Мультимодальность: текст, код, видео</li><li>Интеграция с поиском и YouTube</li><li>Подключение к интернету</li></ul>
+        <div class="tool-use">Текст · Анализ изображений/видео · Поиск</div>
+      </div>
+      <div class="tool-col tool-gamma">
+        <div class="tool-name">Gamma AI<span>презентации</span></div>
+        <ul><li>Для обучения и презентаций</li><li>Полезный инструмент для знаний</li><li>Быстрое создание презентаций</li></ul>
+        <div class="tool-use">Образование · Дизайн презентаций</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-bottom:30px">
+    <h4>5 принципов создания качественных промтов</h4>
+    <div class="chevrons" data-chevrons>
+      <div class="chev"><b>1 · Чёткость</b><p>Определите цель, конкретные детали, без двусмысленности</p></div>
+      <div class="chev"><b>2 · Контекст и роль</b><p>Предоставьте контекст, назначьте роль ИИ («выступи как…»)</p></div>
+      <div class="chev"><b>3 · Формат</b><p>Чёткая структура, укажите формат и приведите пример</p></div>
+      <div class="chev"><b>4 · Итеративность</b><p>Экспериментируйте, уточняйте результат по обратной связи</p></div>
+      <div class="chev"><b>5 · Спец. советы</b><p>Код — точное описание; изображения — стиль; поиск — ключевые слова</p></div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-bottom:30px">
+    <h4>Примеры ИИ-промтов по предметам</h4>
+    <p style="font-size:.85rem; margin-bottom:14px">Общая схема: будьте конкретны → задайте контекст → определите формат → укажите ресурсы.</p>
+    <div class="example-grid">
+      <div class="example"><div class="ex-n">1</div><h5>Биология</h5><p>«Разработать урок по теме "Экосистемы" для колледжа»</p><span class="ex-out">Цели, понятия, методы, оценка</span></div>
+      <div class="example"><div class="ex-n">2</div><h5>Математика</h5><p>«Создать тест по "Уравнениям" — 10 вопросов»</p><span class="ex-out">Вопросы, правильные ответы, объяснения</span></div>
+      <div class="example"><div class="ex-n">3</div><h5>История</h5><p>«Подготовить презентацию "Вторая мировая война"»</p><span class="ex-out">Ключевые события, даты, личности, структура</span></div>
+      <div class="example"><div class="ex-n">4</div><h5>Информатика</h5><p>«Разработать проект "Создание веб-сайта"»</p><span class="ex-out">Этапы работы, инструменты, критерии оценки</span></div>
+      <div class="example"><div class="ex-n">5</div><h5>Литература</h5><p>«Предложить литературу "Русская поэзия XX века"»</p><span class="ex-out">Список книг, краткое содержание, значимость</span></div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-bottom:30px">
+    <h4>Как улучшить промт: тестирование → обратная связь → обучение</h4>
+    <div class="chevrons" data-chevrons>
+      <div class="chev"><b>Тестирование</b><p>Не бойтесь экспериментировать с формулировками — небольшие изменения дают значительно лучший результат</p></div>
+      <div class="chev"><b>Обратная связь</b><p>Если ответ не тот, переформулируйте запрос и уточните, что именно нужно</p></div>
+      <div class="chev"><b>Обучение</b><p>Изучайте примеры успешных промтов других пользователей</p></div>
+    </div>
+  </div>
+
+  <div class="topics">
+    <h3 class="section-title">Темы модуля 3</h3>
+
+    <details class="topic"><summary><span class="topic-num">3.1</span>Автоматизация рутинных задач с помощью ИИ</summary>
+      <div class="topic-body">8 направлений применения ИИ: персонализация, прогнозирование, автоматизация рутины, администрирование, помощь особым потребностям, планирование ресурсов, разработка программы, постоянная помощь.
+        <ul>
+          <li><b>ChatGPT</b> — универсальность; <b>Copilot</b> — Microsoft/Bing; <b>Gemini</b> — мультимодальность; <b>Gamma AI</b> — презентации</li>
+          <li>Принципы промта: чёткость → контекст и роль → формат → итеративное уточнение</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="topic"><summary><span class="topic-num">3.2</span>Визуализация идей для разработки образовательных материалов</summary>
+      <div class="topic-body"><b>Napkin AI</b> — превращает текст в интеллект-карты с помощью ИИ.
+        <ul>
+          <li>Mindmap (автор — Тони Бьюзен, 1974) — центральная идея → ветви → подветви</li>
+          <li>Применение: структурирование материала, планирование курса, мозговой штурм</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="topic"><summary><span class="topic-num">3.3</span>Интерактивные мультимедийные материалы</summary>
+      <div class="topic-body">Ключевые элементы: визуализация, интерактивность, персонализация, обратная связь.
+        <ul>
+          <li><b>EDpuzzle</b> — видеоуроки со встроенными вопросами</li>
+          <li><b>Genially</b> — презентации, квизы, инфографика</li>
+          <li><b>Powtoon</b> — анимационные ролики</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="topic"><summary><span class="topic-num">3.4</span>Создание виртуальных помощников и ИИ для поддержки учебного процесса</summary>
+      <div class="topic-body">Технологии: NLP, ML, чат-боты, VR/AR.
+        <ul>
+          <li>GPT-боты в Telegram: BotFather → OpenAI API/Dialogflow → команды</li>
+          <li><b>Notion AI</b> — планирование, генерация контента и тестов, автоматизация отчётов</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="module" id="m4">
+  <div class="mod-head">
+    <div class="mod-tag" style="color:var(--m4)">Защита и самоанализ</div>
+    <span class="case-tag reveal">Пример: Модуль 2 · Квалификация «Кондитер», 4 уровень ОРК, C10899142</span>
+    <h2>Оценивание результатов обучения: от теории к практике</h2>
+    <p>Конструирование системы критериального оценивания для практического задания «Приготовление и оформление сложного кондитерского изделия» — живой образец того, как защищается продукт модуля.</p>
+  </div>
+
+  <div class="card reveal">
+    <h4>Откуда берётся цель оценивания</h4>
+    <p style="font-size:.88rem">Три источника сходятся в одну цель: <b style="color:var(--text)">требования рынка</b> (профстандарт «Производство продуктов общественного питания», код C10899142), <b style="color:var(--text)">требования государства</b> (ГОСО ТиПО, приказ №348) и <b style="color:var(--text)">уровень мастерства</b> (4 уровень ОРК — самостоятельное ведение процесса, создание сложных изделий). Главная цель — подтвердить реальную способность создавать сложные изделия, а не просто воспроизводить теорию.</p>
+  </div>
+
+  <div class="card reveal">
+    <h4>Цикл педагогического дизайна</h4>
+    <div class="cycle">
+      <div class="cycle-ring"></div>
+      <div class="cycle-card"><span class="n">1</span><h5>Формативное · направляет</h5><p>Обратная связь в реальном времени, корректировка прямо в процессе работы.</p></div>
+      <span class="cycle-arrow">→</span>
+      <div class="cycle-card"><span class="n">2</span><h5>Суммативное · фиксирует</h5><p>Установление уровня достижения результата — практический экзамен.</p></div>
+      <span class="cycle-arrow">→</span>
+      <div class="cycle-card"><span class="n">3</span><h5>Самооценка · развивает</h5><p>Осознание собственного прогресса и зон роста после обратной связи.</p></div>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <h4>Таксономия Блума на практике</h4>
+    <div class="stairs" data-stairs>
+      <div class="step step1"><b>ЗНАНИЕ</b><span>Назвать ингредиенты по ТК и температурные режимы</span></div>
+      <div class="step step2"><b>ПОНИМАНИЕ</b><span>Объяснить, почему бисквит опадает или крем расслаивается</span></div>
+      <div class="step step3"><b>ПРИМЕНЕНИЕ</b><span>Замесить тесто и выполнить формовку по алгоритму</span></div>
+      <div class="step step4"><b>АНАЛИЗ</b><span>Сравнить текстуру двух видов крема, выявить причины</span></div>
+      <div class="step step5"><b>ОЦЕНИВАНИЕ</b><span>Провести бракераж изделия по профессиональным критериям</span></div>
+      <div class="step step6"><b>СОЗДАНИЕ</b><span>Разработать авторский дизайн свадебного торта</span></div>
+    </div>
+    <p style="font-size:.82rem; margin-top:10px">От механического воспроизведения рецепта — к кулинарной архитектуре и авторскому стилю.</p>
+  </div>
+
+  <div class="card reveal">
+    <h4>Оценочная карта</h4>
+    <table class="score-table">
+      <tr><th>Критерий · Технология</th><th>Высокий</th><th>Средний</th><th>Низкий</th></tr>
+      <tr><td>1 — Подготовка сырья и замес (ТК)</td>
+        <td><span class="pill g">3</span> безукоризненные пропорции, точный режим</td>
+        <td><span class="pill a">2</span> незначительные отклонения, исправлены самостоятельно</td>
+        <td><span class="pill r">1</span> грубые ошибки, нужно вмешательство мастера</td></tr>
+      <tr><td>2 — Тепловая обработка (выпечка)</td>
+        <td><span class="pill g">3</span> идеальный режим печи, золотистая корочка</td>
+        <td><span class="pill a">2</span> верный режим, мелкие недочёты колера</td>
+        <td><span class="pill r">1</span> нарушен режим, сырое/подгорело</td></tr>
+    </table>
+    <table class="score-table">
+      <tr><th>Критерий · Оформление</th><th>Высокий</th><th>Средний</th><th>Низкий</th></tr>
+      <tr><td>3 — Техника декорирования</td>
+        <td><span class="pill g">3</span> декор филигранный, без ошибок</td>
+        <td><span class="pill a">2</span> аккуратно, мелкие недочёты</td>
+        <td><span class="pill r">1</span> декор небрежный, техника не освоена</td></tr>
+      <tr><td>4 — Креативность и эстетика</td>
+        <td><span class="pill g">3</span> авторский подход, премиум-уровень</td>
+        <td><span class="pill a">2</span> хорошее, но шаблонное исполнение</td>
+        <td><span class="pill r">1</span> нет композиции, несочетаемые цвета</td></tr>
+    </table>
+  </div>
+
+  <div class="card reveal">
+    <h4>Чек-лист самопроверки студента</h4>
+    <ul class="checklist" data-checklist>
+      <li><span class="tick">✓</span>Организация рабочего места строго соответствует требованиям СанПиН</li>
+      <li><span class="tick">✓</span>Личная гигиена и спецодежда соответствуют нормативам</li>
+      <li><span class="tick">✓</span>Инвентарь и посуда подготовлены, промаркированы и обработаны</li>
+      <li><span class="tick">✓</span>Ингредиенты взвешены строго по технологической карте</li>
+      <li><span class="tick">✓</span>Соблюдена последовательность процесса: замес, формовка, выпечка</li>
+      <li><span class="tick">✓</span>Температурный режим оборудования проконтролирован</li>
+      <li><span class="tick">✓</span>Рабочее место полностью убрано и продезинфицировано</li>
+    </ul>
+  </div>
+
+  <div class="card reveal">
+    <h4>Самооценка и рефлексия обучающегося</h4>
+    <p style="font-size:.85rem; margin-bottom:6px">Оценивание как инструмент развития, а не система наказаний.</p>
+    <div class="journey">
+      <div class="journey-col"><h5>Процесс · поиск проблем</h5>
+        <div class="quote"><b>Проблематизация</b>«Шоколад для декора перегрелся при темперировании, потерял блеск.»</div>
+        <div class="quote"><b>Синтез</b>«В следующий раз буду строго использовать кулинарный пирометр.»</div>
+      </div>
+      <div class="journey-col"><h5>Результат · осознанный успех</h5>
+        <div class="quote"><b>Анализ</b>«Я идеально выровнял покрытие торта, соблюдая прямой угол.»</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <h4>Чек-лист качества ФОС — самооценка преподавателя</h4>
+    <div class="toggles" data-toggles>
+      <div class="toggle-row"><span class="sw"></span><span class="t">Цель задания соответствует заявленным уровням Блума (Анализ, Оценивание, Создание)</span></div>
+      <div class="toggle-row"><span class="sw"></span><span class="t">Задание проверяет реальные профессиональные навыки, а не только теорию</span></div>
+      <div class="toggle-row"><span class="sw"></span><span class="t">Критерии прозрачны и выдаются студентам до начала работы</span></div>
+      <div class="toggle-row"><span class="sw"></span><span class="t">Дескрипторы конкретны, измеримы, без двойного толкования</span></div>
+      <div class="toggle-row"><span class="sw"></span><span class="t">Объективность: любой другой мастер поставит идентичную оценку</span></div>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <h4>Итоги: архитектура компетенции</h4>
+    <p style="font-size:.85rem; margin-bottom:4px">Моя профессиональная трансформация — от интуитивного оценивания к проектированию результата.</p>
+    <div class="chevrons" data-chevrons>
+      <div class="chev"><b>Шаг 1 · Планирую</b><p>Определяю результат обучения по профстандарту</p></div>
+      <div class="chev"><b>Шаг 2 · Подбираю</b><p>Выбираю метод и целевой уровень Блума</p></div>
+      <div class="chev"><b>Шаг 3 · Оцениваю</b><p>Использую измеримые дескрипторы и чек-листы</p></div>
+      <div class="chev"><b>Шаг 4 · Доказываю</b><p>Демонстрирую объективный практический результат</p></div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:30px">
+    <h4>Что я понял за весь курс</h4>
+    <p style="font-size:.88rem; margin-bottom:6px">За три модуля выстроилась одна логика: сначала — нормативная база и функциональная карта квалификации (что именно нужно уметь), затем — система критериального оценивания этого умения (как честно измерить результат), и наконец — ИИ-инструменты, которые ускоряют подготовку материалов и обратную связь, но не заменяют педагогическое суждение. Отметьте, что из этого уже прочно закрепилось — кольцо покажет готовность к защите.</p>
+    <div class="reflect-grid">
+      <div class="ring-wrap">
+        <svg width="150" height="150" viewBox="0 0 140 140">
+          <circle class="ring-bg" cx="70" cy="70" r="60"></circle>
+          <circle class="ring-fg" id="ringFg" cx="70" cy="70" r="60"></circle>
+        </svg>
+        <div class="ring-pct" id="ringPct">0%</div>
+      </div>
+      <ul class="reflect-list" id="reflectList">
+        <li class="reflect-group-title">Модуль 1 · ФКК</li>
+        <li><label style="display:flex;gap:10px;width:100%;cursor:pointer"><input type="checkbox"><span>Понимаю связку НРК – ОРК – ПС и уровни квалификации</span></label></li>
+        <li><label style="display:flex;gap:10px;width:100%;cursor:pointer"><input type="checkbox"><span>Умею выбрать модель трудовых функций под специальность</span></label></li>
+        <li><label style="display:flex;gap:10px;width:100%;cursor:pointer"><input type="checkbox"><span>Могу построить фрагмент ФКК: функция → задача → умения → знания</span></label></li>
+        <li class="reflect-group-title">Модуль 2 · Оценивание</li>
+        <li><label style="display:flex;gap:10px;width:100%;cursor:pointer"><input type="checkbox"><span>Различаю формативное и суммативное оценивание</span></label></li>
+        <li><label style="display:flex;gap:10px;width:100%;cursor:pointer"><input type="checkbox"><span>Умею составлять критериальную рубрику с измеримыми дескрипторами</span></label></li>
+        <li><label style="display:flex;gap:10px;width:100%;cursor:pointer"><input type="checkbox"><span>Собрал(а) и проверил(а) ФОС по чек-листу качества</span></label></li>
+        <li class="reflect-group-title">Модуль 3 · ИИ-инструменты</li>
+        <li><label style="display:flex;gap:10px;width:100%;cursor:pointer"><input type="checkbox"><span>Умею формулировать промт под конкретную педагогическую задачу</span></label></li>
+        <li><label style="display:flex;gap:10px;width:100%;cursor:pointer"><input type="checkbox"><span>Знаю, какой инструмент выбрать: видео, интерактив, карта идей, бот</span></label></li>
+        <li><label style="display:flex;gap:10px;width:100%;cursor:pointer"><input type="checkbox"><span>Понимаю: ИИ ускоряет рутину, но не заменяет педагога</span></label></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>Три модуля курса повышения квалификации педагогов ТиППО · защита строится по логике таксономии Блума — от запоминания к созданию собственного продукта</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab');
+  var mods = document.querySelectorAll('.module');
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      tabs.forEach(function(x){x.classList.remove('active');});
+      mods.forEach(function(x){x.classList.remove('active');});
+      t.classList.add('active');
+      document.getElementById(t.dataset.mod).classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+
+  var input = document.getElementById('videoInput');
+  var video = document.getElementById('heroVideo');
+  input.addEventListener('change', function(e){
+    var f = e.target.files && e.target.files[0];
+    if(!f) return;
+    try{
+      var url = URL.createObjectURL(f);
+      video.src = url;
+      video.play().catch(function(){});
+    }catch(err){ console.error('Video load error', err); }
+  });
+
+  var revealEls = document.querySelectorAll('.reveal, .stage, .chart-card, .chev, .checklist, .toggle-row, .stairs, details.topic');
+  revealEls.forEach(function(el){ el.classList.add('reveal'); });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  },{threshold:.15});
+  revealEls.forEach(function(el){ io.observe(el); });
+
+  document.querySelectorAll('[data-toggles] .toggle-row').forEach(function(el,i){ el.style.transitionDelay=(i*120)+'ms'; });
+  document.querySelectorAll('[data-checklist] li').forEach(function(el,i){ el.style.transitionDelay=(i*80)+'ms'; });
+  document.querySelectorAll('[data-chevrons] .chev').forEach(function(el,i){ el.style.transitionDelay=(i*130)+'ms'; });
+
+  var boxes = document.querySelectorAll('#reflectList input[type=checkbox]');
+  var ringFg = document.getElementById('ringFg');
+  var ringPct = document.getElementById('ringPct');
+  var CIRC = 377;
+  function loadState(){
+    try{
+      var saved = JSON.parse(localStorage.getItem('course-reflection')||'[]');
+      boxes.forEach(function(b,i){ if(saved[i]) b.checked = true; });
+    }catch(e){}
+  }
+  function saveState(){
+    try{
+      var state = Array.prototype.map.call(boxes,function(b){return b.checked;});
+      localStorage.setItem('course-reflection', JSON.stringify(state));
+    }catch(e){}
+  }
+  function updateRing(){
+    var total = boxes.length, done = 0;
+    boxes.forEach(function(b){
+      var li = b.closest('li');
+      if(b.checked){ done++; li.classList.add('done'); } else { li.classList.remove('done'); }
+    });
+    var pct = total ? Math.round(done/total*100) : 0;
+    ringFg.style.strokeDashoffset = CIRC - (CIRC*pct/100);
+    ringPct.textContent = pct + '%';
+  }
+  boxes.forEach(function(b){ b.addEventListener('change', function(){ saveState(); updateRing(); }); });
+  loadState(); updateRing();
+})();
+</script>
+</body>
+</html>
